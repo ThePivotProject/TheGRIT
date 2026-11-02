@@ -1,0 +1,16 @@
+{
+  "name": "GRIT - The GRIT Training",
+  "short_name": "GRIT",
+  "description": "The GRIT Team - We Are Built - The Pivot Project LLC - https://thepivotproject.github.io/TheGRIT/",
+  "start_url": "https://thepivotproject.github.io/TheGRIT/",
+  "display": "standalone",
+  "background_color": "#0F0F0F",
+  "theme_color": "#FF4D00",
+  "icons": [
+    {
+      "src": "./GRIT_good2.JPG",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
