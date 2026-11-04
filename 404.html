@@ -1051,8 +1051,7 @@ ${zr()}`)}`,className:"btn-ghost px-4 py-2 uppercase font-bold cursor-pointer",s
   const ROSTER_KEY = 'grit-team-roster-v1';
   const CHECKINS_KEY = 'grit-checkins-v1';
   
-  function getConfig(){
-    try { return JSON.parse(localStorage.getItem(CONFIG_KEY) || 'null'); } catch(e){ return null; }
+  function getConfig(){ try { var c = JSON.parse(localStorage.getItem(CONFIG_KEY) || 'null'); if(c && c.url && c.key) return c; } catch(e){} return { url: 'https://jchbqfnpytkiaioraoqr.supabase.co', key: 'sb_publishable_AX6x9Fgb5Yh5Uo0vuDSYHQ_eyPKyOE5' }; }
   }
   function saveConfig(url, key){
     localStorage.setItem(CONFIG_KEY, JSON.stringify({ url: url.trim(), key: key.trim() }));
