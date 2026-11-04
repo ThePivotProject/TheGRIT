@@ -7,7 +7,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
-  <title>The GRIT</title>
+  <title>React Artifact</title>
   <style>*, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -1005,6 +1005,7 @@ function GRIT_getStoredPin(id){try{return localStorage.getItem("grit-pin-"+id)||
 function GRIT_storePin(id,p){try{localStorage.setItem("grit-pin-"+id,p)}catch(e){}}
 function GRIT_checkPin(profile, entered){let stored = (profile.pin||"").toString().trim(); if(!stored) return true; return stored===entered.toString().trim();}
 function za({profile:t,setProfile:e,onSave:r,savedLabel:n,showShare:i}){
+let [E,I]=S.useState(!1),[l,V]=S.useState(!1),p=S.useRef(null);
 let [pinInput, setPinInput]=S.useState(()=>GRIT_getStoredPin(t.id)||"");
 let [pinMsg, setPinMsg]=S.useState("");
 S.useEffect(()=>{setPinInput(GRIT_getStoredPin(t.id)||"")},[t.id]);
@@ -1023,42 +1024,44 @@ let canSave = ()=>{
   setPinMsg("Wrong PIN for this athlete — ask coach");
   return false;
 };
-let doSave = ()=>{
-  if(!canSave()) return;
-  r();
-};
+let doSave = ()=>{ if(!canSave()) return; r(); };
+let K=()=>{if(p.current)p.current.focus(),p.current.select(),document.execCommand("copy"),V(!0),setTimeout(()=>V(!1),1800)};
+let A=Te(t.name||t.id),o=`${VR}#grit-training-${A}`;
 return P("div",{style:{background:Tr,border:ne,padding:24,backdropFilter:"blur(6px)"},children:[
-P("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:20},children:[
-P("div",{style:{background:"rgba(16,16,16,0.8)",border:"1px solid rgba(255,255,255,0.12)",padding:14},children:[
-c("div",{className:"uppercase font-bold",style:{fontSize:11,letterSpacing:"0.8px",color:B,marginBottom:8},children:"Athlete — Intense"}),
-P("div",{style:{position:"relative",width:"100%",aspectRatio:"4/5",overflow:"hidden",background:"rgba(10,10,10,0.9)",border:"1px solid rgba(255,255,255,0.08)"},children:[
-t.athletePhoto||t.photo?c("img",{src:t.athletePhoto||t.photo,style:{width:"100%",height:"100%",objectFit:"cover",filter:"contrast(1.25) brightness(0.85) saturate(0.9)",display:"block"}}):c("div",{style:{width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center",color:M,fontSize:12},children:"No Athlete photo"}),
-c("div",{style:{position:"absolute",inset:0,background:"radial-gradient(60% 60% at 50% 35%, transparent 40%, rgba(0,0,0,0.55) 100%), linear-gradient(180deg, rgba(255,77,0,0.18) 0%, rgba(0,0,0,0.35) 100%)",pointerEvents:"none"}}),
-c("div",{style:{position:"absolute",bottom:8,left:8,right:8,fontSize:10,color:"#FF4D00",letterSpacing:"1px",fontWeight:700,textTransform:"uppercase"},children:"We > Me • GRIT"})
+P("div",{className:"flex flex-col sm:flex-row gap-3",style:{marginBottom:20},children:[c("button",{type:"button",onClick:doSave,className:"btn-save flex-1 px-6 py-3.5 uppercase font-bold cursor-pointer",style:{fontSize:13,letterSpacing:"0.8px"},children:"SAVE PROFILE"}),c("button",{type:"button",onClick:()=>I(!E),className:"btn-ghost flex-1 px-6 py-3.5 uppercase font-bold cursor-pointer",style:{fontSize:13,letterSpacing:"0.8px"},children:"SHARE PROFILE"})]}),
+P("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:20},children:[
+P("label",{style:{display:"block",cursor:"pointer",background:"rgba(16,16,16,0.8)",border:"1px solid rgba(255,255,255,0.12)",padding:10},children:[
+c("div",{className:"uppercase font-bold",style:{fontSize:10,letterSpacing:"0.8px",color:B,marginBottom:6,textAlign:"center"},children:"Athlete"}),
+P("div",{style:{position:"relative",width:"100%",height:140,overflow:"hidden",background:"rgba(10,10,10,0.9)",border:"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center"},children:[
+t.athletePhoto||t.photo?c("img",{src:t.athletePhoto||t.photo,style:{width:"100%",height:"100%",objectFit:"cover",filter:"contrast(1.25) brightness(0.85) saturate(0.9)",display:"block"}}):c("div",{style:{padding:"0 12px",textAlign:"center",color:M,fontSize:11,lineHeight:1.4},children:"upload an image of you as an athlete"}),
+c("div",{style:{position:"absolute",inset:0,background:"radial-gradient(60% 60% at 50% 35%, transparent 40%, rgba(0,0,0,0.55) 100%), linear-gradient(180deg, rgba(255,77,0,0.18) 0%, rgba(0,0,0,0.35) 100%)",pointerEvents:"none"}})
 ]}),
-c("input",{type:"file",accept:"image/*",onChange:(ev)=>handleFile("athlete", ev.target.files?.[0]),style:{marginTop:10,width:"100%",background:"rgba(10,10,10,0.8)",border:"1px solid rgba(255,255,255,0.12)",color:L,fontSize:11,padding:"8px"},className:"w-full outline-none"})
+c("input",{type:"file",accept:"image/*",onChange:(ev)=>handleFile("athlete", ev.target.files?.[0]),style:{display:"none"}})
 ]}),
-P("div",{style:{background:"rgba(255,245,240,0.06)",border:"1px solid rgba(255,255,255,0.12)",padding:14},children:[
-c("div",{className:"uppercase font-bold",style:{fontSize:11,letterSpacing:"0.8px",color:"#FFD6C2",marginBottom:8},children:"Me as Me — Joyful"}),
-P("div",{style:{position:"relative",width:"100%",aspectRatio:"4/5",overflow:"hidden",background:"rgba(255,250,245,0.9)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:"18px"},children:[
-t.mePhoto?c("img",{src:t.mePhoto,style:{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(1.08) saturate(1.15) contrast(1.05)",display:"block"}}):c("div",{style:{width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center",color:"#8A8A8A",fontSize:12},children:"No Me as Me photo"}),
-c("div",{style:{position:"absolute",inset:0,background:"linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,214,194,0.18) 100%)",pointerEvents:"none"}})
+P("label",{style:{display:"block",cursor:"pointer",background:"rgba(28,20,16,0.65)",border:"1px solid rgba(255,255,255,0.12)",padding:10},children:[
+c("div",{className:"uppercase font-bold",style:{fontSize:10,letterSpacing:"0.8px",color:"#FFD6C2",marginBottom:6,textAlign:"center"},children:"Me as Me"}),
+P("div",{style:{position:"relative",width:"100%",height:140,overflow:"hidden",background:"rgba(28,20,16,0.95)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:"12px",display:"flex",alignItems:"center",justifyContent:"center"},children:[
+t.mePhoto?c("img",{src:t.mePhoto,style:{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(1.08) saturate(1.15) contrast(1.05)",display:"block"}}):c("div",{style:{padding:"0 12px",textAlign:"center",color:"#E8CFC0",fontSize:11,lineHeight:1.4},children:"upload an image of you as you see yourself"}),
+c("div",{style:{position:"absolute",inset:0,background:"linear-gradient(180deg, rgba(255,200,170,0.10) 0%, rgba(0,0,0,0.18) 100%)",pointerEvents:"none"}})
 ]}),
-c("input",{type:"file",accept:"image/*",onChange:(ev)=>handleFile("me", ev.target.files?.[0]),style:{marginTop:10,width:"100%",background:"rgba(255,250,245,0.15)",border:"1px solid rgba(255,255,255,0.18)",color:L,fontSize:11,padding:"8px"},className:"w-full outline-none"})
+c("input",{type:"file",accept:"image/*",onChange:(ev)=>handleFile("me", ev.target.files?.[0]),style:{display:"none"}})
 ]})
 ]}),
+P("div",{className:"grid gap-4",style:{marginBottom:20},children:[
+c(bI,{label:"Athlete Name",value:t.name,onChange:(d)=>e({...t,name:d}),placeholder:"",maxLength:48}),
+P("div",{className:"grid",style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"16px"},children:[c(bI,{label:"Sport of Focus",value:t.sport,onChange:(d)=>e({...t,sport:d}),placeholder:"",maxLength:32}),c(bI,{label:"Position They Play",value:t.position,onChange:(d)=>e({...t,position:d}),placeholder:"",maxLength:32})]}),
+c(wa,{label:"What do you want your impact to be?",value:t.impact,onChange:(d)=>e({...t,impact:d}),placeholder:"Lead by example, hold the standard, bring energy every rep...",rows:3}),
+c(wa,{label:"Something you say to lift yourself up every day",value:t.mantra,onChange:(d)=>e({...t,mantra:d}),placeholder:"I am built for hard. I do hard things.",rows:2}),
+P("div",{style:{marginTop:24},children:[c(mr,{n:"",title:"My Performance Metrics"}),P("div",{className:"grid gap-4",children:[c(bI,{label:"Resiliency: consecutive months without a game missed due to injury",value:(t.metrics||{}).resiliency||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),resiliency:d}}),placeholder:""}),c(bI,{label:"Pitch Velocity - mph",value:(t.metrics||{}).pitchVelocity||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),pitchVelocity:d}}),placeholder:""}),c(bI,{label:"20 yd. (home to first) time - sec",value:(t.metrics||{}).homeToFirst||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),homeToFirst:d}}),placeholder:""}),c(bI,{label:"5-10-5 Drill time - sec",value:(t.metrics||{}).fiveTenFive||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),fiveTenFive:d}}),placeholder:""}),c(bI,{label:"Standing Broad Jump - ft. and inches",value:(t.metrics||{}).broadJump||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),broadJump:d}}),placeholder:""}),c(bI,{label:"Hip Thruster Velocity - 6 reps @ 55% of 1RPM - meters/sec",value:(t.metrics||{}).hipThruster||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),hipThruster:d}}),placeholder:""}),c(bI,{label:"Palloff Core Rotational Strength - ft/sec",value:(t.metrics||{}).palloff||"",onChange:(d)=>e({...t,metrics:{...(t.metrics||{}),palloff:d}}),placeholder:""})]})]})]}),
 P("div",{style:{marginTop:12,background:"rgba(16,16,16,0.6)",border:"1px solid rgba(255,255,255,0.08)",padding:12,display:"flex",gap:8,alignItems:"center",flexWrap:"wrap"},children:[
 c("span",{className:"uppercase font-bold",style:{fontSize:10,letterSpacing:"0.8px",color:M},children:"PIN:"}),
 c("input",{type:"password",value:pinInput,onChange:(ev)=>{setPinInput(ev.target.value);setPinMsg("");},placeholder:t.pin?"Enter your 4-digit PIN":"Set a 4-digit PIN (leave blank = no PIN)",maxLength:12,style:{background:"rgba(10,10,10,0.8)",border:"1px solid rgba(255,255,255,0.12)",color:L,fontSize:12,padding:"8px 10px",minWidth:180}}),
 c("button",{type:"button",onClick:()=>{if(!t.pin){let p=pinInput.trim();if(p.length<3){setPinMsg("PIN too short — 4 digits");return;} e({...t,pin:p}); GRIT_storePin(t.id,p); setPinMsg("PIN set");}else{if(GRIT_checkPin(t,pinInput)){GRIT_storePin(t.id,pinInput); setPinMsg("PIN OK");}else{setPinMsg("Wrong PIN");}}},className:"btn-ghost px-4 py-2 uppercase font-bold cursor-pointer",style:{fontSize:10},children:t.pin?"Unlock":"Set PIN"}),
 pinMsg&&c("span",{style:{fontSize:10,color:pinMsg.includes("OK")||pinMsg.includes("set")?B:"#FF6B6B"},children:pinMsg})
 ]}),
-P("div",{className:"flex gap-2",style:{marginTop:16,flexWrap:"wrap"},children:[
-c("button",{type:"button",onClick:doSave,className:"btn-save px-6 py-3 uppercase font-bold cursor-pointer",style:{fontSize:12},children:"Save Profile"}),
-i&&c("button",{type:"button",onClick:()=>{let slug=Te(t.name||t.id); let url=`${window.location.origin}${window.location.pathname}#grit-training-${slug}`; navigator.clipboard?.writeText(url);},className:"btn-ghost px-5 py-3 uppercase font-bold cursor-pointer",style:{fontSize:11},children:"Share Profile"})
-]}),
-n&&c("div",{style:{fontSize:11,color:B,marginTop:8},className:"uppercase font-bold",children:n})
-]})}
+P("div",{className:"flex flex-col sm:flex-row gap-3",style:{marginTop:22},children:[c("button",{type:"button",onClick:doSave,className:"btn-save flex-1 px-6 py-3.5 uppercase font-bold cursor-pointer",style:{fontSize:13,letterSpacing:"0.8px",height:52},children:"Save Profile"}),i&&P("button",{type:"button",onClick:()=>I(!E),className:"btn-ghost flex-1 px-6 py-3.5 uppercase font-bold cursor-pointer flex items-center justify-center gap-2",style:{fontSize:13,letterSpacing:"0.8px",height:52},children:[c(Ti,{size:22}),"Share Profile"]})]}),
+n&&c("div",{className:"uppercase font-bold",style:{fontSize:11,letterSpacing:"0.8px",color:B,marginTop:12},children:n}),
+E&&P("div",{style:{marginTop:16,background:"rgba(16,16,16,0.9)",border:ne,padding:16},children:[P("div",{className:"flex items-center gap-3",style:{marginBottom:14},children:[c(Ti,{size:36}),P("div",{className:"flex flex-col",children:[P("span",{className:"display uppercase",style:{fontSize:16,color:L,letterSpacing:"0.5px"},children:[t.name||"Athlete"," — GRIT Profile"]}),c("span",{style:{fontSize:11,color:M,letterSpacing:"0.8px"},children:"Share link is just GRIT icon G box"})]})]}),P("div",{className:"flex flex-col sm:flex-row gap-2",children:[c("input",{ref:p,readOnly:!0,value:o,className:"flex-1 min-w-0 outline-none",style:{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.12)",color:L,fontSize:12,padding:"10px 12px"},onFocus:(d)=>d.target.select()}),c("button",{type:"button",onClick:K,className:"btn-ghost px-4 py-2 uppercase font-bold cursor-pointer",style:{fontSize:12},children:l?"Copied":"Copy Link"})]}),P("div",{className:"flex gap-2",style:{marginTop:12},children:[c("div",{style:{width:64,height:64,background:Mt,border:`2px solid ${B}`,display:"flex",alignItems:"center",justifyContent:"center"},children:c("span",{className:"display",style:{fontSize:28,color:B},children:"G"})}),c("span",{style:{fontSize:11,color:M,lineHeight:1.5,maxWidth:220},children:"This is the share preview. Link copies the GRIT G box — no external checkout, just profile link."})]})]})]})}
 function Co(){return c("div",{className:"relative flex items-center justify-center text-center px-6",style:{minHeight:"calc(100svh - 160px)",maxWidth:980,margin:"0 auto"},children:P("h1",{style:{fontFamily:'"Space Grotesk", system-ui, sans-serif',fontWeight:300,fontSize:"clamp(32px,6vw,72px)",lineHeight:1.22,color:"#FFFFFF",letterSpacing:"-0.02em",textShadow:"0 2px 24px rgba(0,0,0,0.65), 0 1px 2px rgba(0,0,0,0.8)"},children:["We ",c("span",{style:{color:B},children:"Compete"})," Like"," ",c("span",{style:{color:B},children:"We've"}),c("br",{}),"Never Lost",c("br",{}),"And ",c("span",{style:{color:B},children:"Train"})," Like"," ",c("span",{style:{color:B},children:"We've"}),c("br",{}),"Never Won"]})})}function To({roster:t,checkins:e,setCheckins:i,setRoster:r,initialSlug:n}){let[R,E]=S.useState(()=>{if(!n)return null;let f=t.find((m)=>Te(m.name||m.id)===n);return f?f.id:null}),[I,l]=S.useState(n);S.useEffect(()=>{if(!n)return;let f=t.find((m)=>Te(m.name||m.id)===n);if(f)E(f.id),l(null);else l(n),E(null)},[n,t]);let V=S.useMemo(()=>t.find((f)=>f.id===R)||null,[t,R]),[p,A]=S.useState(()=>V||Xr("checkin-main")),[o,y]=S.useState({stretch:"",main:"",speed:""}),[K,d]=S.useState(xI),[O,a]=S.useState({effort:!1,oyo:"",teammate:"",words:""}),[u,q]=S.useState(null),[W,j]=S.useState(null),[U,C]=S.useState(null),[T,J]=S.useState(null),[g,Xt]=S.useState(!1),[aR,gr]=S.useState(!1),vr=S.useRef(null),Br=S.useRef(null),[QI,qR]=S.useState(!1),[ba,hI]=S.useState(!1),La=S.useRef(null),[cR,NI]=S.useState(null);S.useEffect(()=>{let m=e[R||"default"];if(V)A(V);else if(!R&&I)A((F)=>({...Xr("checkin-main"),name:Fa(I)}));else if(!R)A(Xr("checkin-main"));if(m){d(m.homework.length?m.homework:xI);let _w=m.workout;if(typeof _w==="string")y({stretch:"",main:_w,speed:""});else if(_w&&typeof _w==="object")y({stretch:_w.stretch||"",main:_w.main||"",speed:_w.speed||""});else y({stretch:"",main:"",speed:""});a(m.grit)}else{d(xI);y({stretch:"",main:"",speed:""});a({effort:!1,oyo:"",teammate:"",words:""});}q(null),j(null),C(null),J(null),Xt(!1),qR(!1)},[R,V,e,I]);let tt=V?.name?.trim()||(I?Fa(I):"")||"Your Training",Fr=V?.name?Te(V.name):I?I:R?Te(R):"your-training",me=`The GRIT Training - ${tt}`,kr=S.useMemo(()=>t.filter((f)=>f.name.trim().length>0),[t]),Xe=S.useMemo(()=>t.find((f)=>f.id===cR)||null,[t,cR]),Se=Xe?.name?.trim()||O.teammate.trim()||"Teammate",wr=S.useMemo(()=>{if(Xe?.name)return Te(Xe.name);if(O.teammate.trim())return Te(O.teammate.trim());return"teammate"},[Xe,O.teammate]);S.useEffect(()=>{if(tt&&tt!=="Your Training")document.title=me;else document.title="GRIT - Share Links to thepivotproject.github.io/TheGRIT/"},[me,tt]),S.useEffect(()=>{if(!V&&!I)return;let f=`#grit-training-${Fr}`;if(typeof window<"u"&&window.location.hash!==f)try{history.replaceState(null,"",f)}catch{}},[Fr,V,I]);let MI=K.filter((f)=>f.done&&f.text.trim()).length,Qa=(O.effort?1:0)+(O.oyo.trim()?1:0)+(O.teammate.trim()||O.words.trim()?1:0),zr=()=>{return`${VR}#grit-training-${Fr}`},pR=()=>{return`${VR}#grit-training-${wr}`},mi=(f)=>{let m=R||"default";i((F)=>({...F,[m]:{homework:K,workout:o,grit:O,savedAt:new Date().toISOString(),...F[m]||{},...f||{}}}))},oR=()=>{let f=Se,m=O.words.trim()||"Keep showing up. We are built for hard.",F=pR(),Zt=tt.toUpperCase()==="YOUR TRAINING"||tt==="Your Training"?"Expect Nothing, Appreciate Everything.":tt;return`GRIT CARD
 
 To: ${f}
@@ -1111,7 +1114,7 @@ function mo({roster:t,setRoster:e,setCheckins:i}){let[r,n]=S.useState(null),R=(E
           inset: 0;
           width: 100vw;
           height: 100vh;
-          object-fit: contain;
+          object-fit: cover;
           object-position: center center;
           display: block;
           border: none;
