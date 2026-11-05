@@ -1277,6 +1277,7 @@ function LI(){let[t,e]=S.useState("home"),[i,r]=S.useState(0),[n,R]=S.useState(0
   const CHECKINS_KEY = 'grit-checkins-v1';
   
   function getConfig(){ try { var c = JSON.parse(localStorage.getItem(CONFIG_KEY) || 'null'); if(c && c.url && c.key) return c; } catch(e){} return { url: 'https://jchbqfnpytkiaioraoqr.supabase.co', key: 'sb_publishable_AX6x9Fgb5Yh5Uo0vuDSYHQ_eyPKyOE5' }; }
+  }
   function saveConfig(url, key){
     localStorage.setItem(CONFIG_KEY, JSON.stringify({ url: url.trim(), key: key.trim() }));
   }
@@ -1360,7 +1361,7 @@ function LI(){let[t,e]=S.useState("home"),[i,r]=S.useState(0),[n,R]=S.useState(0
     const btn = document.createElement('button');
     btn.id = 'grit-coach-setup-btn';
     btn.textContent = 'COACH • Tap for Supabase Setup';
-    btn.style.cssText = 'position:fixed;bottom:90px;right:12px;z-index:9999;background:#FF4D00;color:#0F0F0F;border:2px solid #FF4D00;padding:10px 14px;font-family:Space Grotesk,sans-serif;font-size:11px;letter-spacing:1px;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);';
+    btn.style.cssText = 'position:fixed;bottom:90px;right:12px;z-index:9999;background:#FF4D00;color:#0F0F0F;border:2px solid #FF4D00;padding:10px 14px;font-family:Space Grotesk,sans-serif;font-size:11px;letter-spacing:1px;font-weight:700;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);'5,255,0.15);padding:10px 14px;font-family:Space Grotesk,sans-serif;font-size:11px;letter-spacing:0.8px;text-transform:uppercase;cursor:pointer;';
     btn.onclick = () => {
       let panel = document.getElementById('grit-coach-setup');
       if(panel){ panel.style.display = panel.style.display==='none'?'block':'none'; return; }
